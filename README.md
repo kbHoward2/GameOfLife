@@ -15,6 +15,7 @@ cmake ..
 make`
 
 afterwards run the executable.
+
 `./GameOfLife`
 
 ## Upcoming & Planned Features.
