@@ -12,8 +12,8 @@ cd GameOfLife
 mkdir build
 cd build
 cmake ..
-make
-'
+make`
+
 afterwards run the executable.
 `./GameOfLife`
 
@@ -28,3 +28,4 @@ afterwards run the executable.
 - Automatic resolution and fullscreen/window.
 - Board size unlinked from display. (Bigger boards)
 - Magnification.
+- MacOS support.
