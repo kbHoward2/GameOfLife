@@ -4,7 +4,7 @@
 	cells. This allows for greater simplicity for addition of rows and columns in the future.
 	(Hopefully).
 
-
+s code is made available under the Creative Commons Zero 1.0 License (https://creativecommons.org/publicdomain/zero/1.0)”
 
 
 
