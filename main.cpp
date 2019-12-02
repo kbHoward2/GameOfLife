@@ -5,14 +5,11 @@
 	(Hopefully).
 
 	This code is made available under the Creative Commons Zero 1.0 License (https://creativecommons.org/publicdomain/zero/1.0)”
-
-
 */
 
 #include <iostream>
 #include <random>
 #include <vector>
-#include <chrono>
 
 #ifdef _WIN32
 #include <SDL.h>
@@ -150,8 +147,8 @@ private:
         float m_fLastFrameTime = 0.0f;
 
 	int m_nTotalElements;
-        float FPS = 60;
-        float MS_ELAPSED_TIME = 1000.f / FPS; // FPS
+        float FPS = 2.f;
+        float const MS_PER_FRAME= 1000.f / FPS; 
   
 };
 
@@ -174,55 +171,33 @@ void Life::Start()
 
 void Life::Run()
 {
-  /* m_bRunning
-     display.PollInput();
-     Update();
-     Render();
-     FPS
-
-     A game loop overview
-
-     lastTime = getCurrentTime()
-     lag = 0
-     while(running)
-     {
-     currentTime = getCurrentTime()
-     elapsedTime = currentTime - lastTime;
-     lastTime = current;
-     lag += elapsed;
-
-     ProcessInput()
-     
-     while(lag >= MS_PER_UPDATE)
-     {
-     Update();
-     lag -= MS_PER_UPDATE;
-     }
-
-     render(lag / MS_PER_UPDATE)
-     }
-
-  */
-  float startTime = SDL_GetTicks();
+  float lastTime = SDL_GetTicks();
+  float accumulator = 0.0f;
   while (m_bRunning)
-  {
-    float lag = 0.f;
-    float currentTime = SDL_GetTicks(); // SDL_GetTicks returns time in milliseconds since the program has started
-    float elapsedTime = (float) currentTime - startTime;
-    startTime = currentTime;
-    lag += elapsedTime;
+    {
+      float currentTime = SDL_GetTicks();
+      float deltaTime= currentTime - lastTime;
+      lastTime = currentTime; 
 
-    if (!display.PollInput())
-      m_bRunning = false;
+      accumulator += deltaTime;
+      
+      std::cout << lastTime << " " << currentTime << " " << deltaTime << " " << accumulator << std::endl;
 
-    Update();
-    
-    while (lag >= MS_ELAPSED_TIME)
-      {
-	lag -= MS_ELAPSED_TIME;
-      }
-    Render();
-  }
+      if (!display.PollInput())
+	{
+	  m_bRunning = false;
+	}
+
+
+      while (accumulator >= MS_PER_FRAME)
+	{
+	  Update();
+	  accumulator -= MS_PER_FRAME;
+	}
+      Render();
+    }
+ 
+
 }
 
 void Life::Seed(float threshold)
