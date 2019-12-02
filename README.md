@@ -19,10 +19,10 @@ afterwards run the executable.
 `./GameOfLife`
 
 ## Upcoming & Planned Features.
-- Left/Right click adds/kills cells in a square.
 - Refactor application loop.
-- Accelerate/Decelerate time.
 - Pause/Unpause & reset board.
+- Left/Right click adds/kills cells in a square.
+- Accelerate/Decelerate time.
 - Generation Counter & total living cell counter.
 - Colors.
 - Configuration file for colors.

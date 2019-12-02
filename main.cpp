@@ -4,8 +4,7 @@
 	cells. This allows for greater simplicity for addition of rows and columns in the future.
 	(Hopefully).
 
-s code is made available under the Creative Commons Zero 1.0 License (https://creativecommons.org/publicdomain/zero/1.0)”
-
+	This code is made available under the Creative Commons Zero 1.0 License (https://creativecommons.org/publicdomain/zero/1.0)”
 
 
 */
@@ -13,6 +12,7 @@ s code is made available under the Creative Commons Zero 1.0 License (https://cr
 #include <iostream>
 #include <random>
 #include <vector>
+#include <chrono>
 
 #ifdef _WIN32
 #include <SDL.h>
@@ -68,7 +68,7 @@ bool Display::Create()
 		}
 		else
 		{
-			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
 
 			if (m_pRenderer == nullptr)
 			{
@@ -141,14 +141,18 @@ public:
 private:
 	Display display;
 	std::vector<bool> m_bBoard, m_bNextBoard;
-	bool m_bRunning;
+	bool m_bRunning = true;
 
 	// 1, 2, 3, 4 - starts to get weird 6, 8 
 	int m_nCellSize = 5;
 	int m_nBoardSizeWidth;
 	int m_nBoardSizeHeight;
+        float m_fLastFrameTime = 0.0f;
 
 	int m_nTotalElements;
+        float FPS = 60;
+        float MS_ELAPSED_TIME = 1000.f / FPS; // FPS
+  
 };
 
 void Life::Start()
@@ -170,36 +174,55 @@ void Life::Start()
 
 void Life::Run()
 {
-	/* Untie updates from FPS, this way we can count generations.
-		This run method was implemented from here:
-		https://www.youtube.com/watch?v=44tO977slsU
-	*/
-	const float FPS = 30;
-	const int frameDelay = 1000 / FPS;
+  /* m_bRunning
+     display.PollInput();
+     Update();
+     Render();
+     FPS
 
-	Uint32 frameStart;
-	int frameTime;
+     A game loop overview
 
-	while (m_bRunning)
-	{
+     lastTime = getCurrentTime()
+     lag = 0
+     while(running)
+     {
+     currentTime = getCurrentTime()
+     elapsedTime = currentTime - lastTime;
+     lastTime = current;
+     lag += elapsed;
 
-		frameStart = SDL_GetTicks(); // how many milli 
+     ProcessInput()
+     
+     while(lag >= MS_PER_UPDATE)
+     {
+     Update();
+     lag -= MS_PER_UPDATE;
+     }
 
-		if (!display.PollInput())
-		{
-			m_bRunning = false;
-		}
+     render(lag / MS_PER_UPDATE)
+     }
 
-		Update();
+  */
+  float startTime = SDL_GetTicks();
+  while (m_bRunning)
+  {
+    float lag = 0.f;
+    float currentTime = SDL_GetTicks(); // SDL_GetTicks returns time in milliseconds since the program has started
+    float elapsedTime = (float) currentTime - startTime;
+    startTime = currentTime;
+    lag += elapsedTime;
 
-		frameTime = SDL_GetTicks() - frameStart;
+    if (!display.PollInput())
+      m_bRunning = false;
 
-		if (frameDelay > frameTime)
-		{
-			SDL_Delay(frameDelay - frameTime);
-		}
-		Render();
-	}
+    Update();
+    
+    while (lag >= MS_ELAPSED_TIME)
+      {
+	lag -= MS_ELAPSED_TIME;
+      }
+    Render();
+  }
 }
 
 void Life::Seed(float threshold)
@@ -296,7 +319,7 @@ int Life::GetTotalNeighbors(int const x_pos, const int y_pos, const std::vector<
 
 int main(int argc, char **argv)
 {
-
+  
 	Life life;
 
 	life.Start();
