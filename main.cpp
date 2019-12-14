@@ -10,6 +10,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <chrono>
 
 #ifdef _WIN32
 #include <SDL.h>
@@ -27,9 +28,11 @@ constexpr float ASPECT_RATIO = 1.777777777777778f;
 class Display
 {
 public :
+        Display(){};
 	bool Create();
 	void Refresh();
-	~Display();
+  void Close();
+  ~Display(){};
 
 	static int Width;
 	static int Height;
@@ -65,7 +68,7 @@ bool Display::Create()
 		}
 		else
 		{
-			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 
 			if (m_pRenderer == nullptr)
 			{
@@ -83,7 +86,7 @@ void Display::Refresh()
 	SDL_RenderPresent(m_pRenderer);
 }
 
-Display::~Display()
+void Display::Close()
 {
 	if (m_pWindow)
 		SDL_DestroyWindow(m_pWindow);
@@ -134,22 +137,19 @@ public:
 	void Render();
 
 	int GetIndex(int x, int y) { return (y * m_nBoardSizeWidth + x);}
+ 
 
 private:
 	Display display;
 	std::vector<bool> m_bBoard, m_bNextBoard;
-	bool m_bRunning = true;
+  bool m_bRunning = true;
 
 	// 1, 2, 3, 4 - starts to get weird 6, 8 
 	int m_nCellSize = 5;
 	int m_nBoardSizeWidth;
 	int m_nBoardSizeHeight;
-        float m_fLastFrameTime = 0.0f;
 
 	int m_nTotalElements;
-        float FPS = 2.f;
-        float const MS_PER_FRAME= 1000.f / FPS; 
-  
 };
 
 void Life::Start()
@@ -171,33 +171,32 @@ void Life::Start()
 
 void Life::Run()
 {
-  float lastTime = SDL_GetTicks();
-  float accumulator = 0.0f;
+
+  auto tp0 = std::chrono::high_resolution_clock::now();
+
+  float tick = 8.f;
+  float tick_rate = 1000 / tick;
+  float lag = 0.0;
+  
   while (m_bRunning)
     {
-      float currentTime = SDL_GetTicks();
-      float deltaTime= currentTime - lastTime;
-      lastTime = currentTime; 
-
-      accumulator += deltaTime;
+      auto tp1 = std::chrono::high_resolution_clock::now();
+      std::chrono::duration<float, std::milli> elapsed = tp1 - tp0;
+      float elapsedTime= elapsed.count();
       
-      std::cout << lastTime << " " << currentTime << " " << deltaTime << " " << accumulator << std::endl;
-
       if (!display.PollInput())
-	{
-	  m_bRunning = false;
-	}
+	m_bRunning = false;
 
+      tp0 = tp1;
+      lag += elapsedTime;
 
-      while (accumulator >= MS_PER_FRAME)
+      while (lag >= tick_rate)
 	{
 	  Update();
-	  accumulator -= MS_PER_FRAME;
+	  lag -= tick_rate;
 	}
       Render();
     }
- 
-
 }
 
 void Life::Seed(float threshold)
@@ -246,7 +245,7 @@ void Life::Update()
 
 	//m_bNextBoard.clear();
 	m_bNextBoard = m_bBoard;
-
+	
 	for (int y = 0; y < m_nBoardSizeHeight; y++)
 	{
 		for (int x = 0; x < m_nBoardSizeWidth; x++)
@@ -270,6 +269,7 @@ void Life::Update()
 	}
 
 	// Update our board with new cells
+
 	m_bBoard = m_bNextBoard;
 	display.Refresh();
 }
@@ -299,7 +299,6 @@ int main(int argc, char **argv)
 
 	life.Start();
 	life.Run();
-
 
 	return 0;
 }
