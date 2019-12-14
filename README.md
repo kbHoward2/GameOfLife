@@ -1,6 +1,9 @@
 # Game Of Life 
 A recreation of Conway's Game of Life using C++ and SDL2.
 
+![Alt text](gol.png?raw=true "Conways's Game Of Life")
+
+
 ## Installation Dependencies
 ### Linux (Ubuntu/Mint)
 `sudo apt-get install g++ cmake git libsdl2 libsdl2-dev`

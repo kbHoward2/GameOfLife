@@ -124,7 +124,7 @@ bool Display::PollInput()
 
 
 int Display::Width = (Display::Height * ASPECT_RATIO);
-int Display::Height = 720;
+int Display::Height = 600;
 
 class Life
 {
