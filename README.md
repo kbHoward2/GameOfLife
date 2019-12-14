@@ -3,7 +3,7 @@ A recreation of Conway's Game of Life using C++ and SDL2.
 
 ## Installation Dependencies
 ### Linux (Ubuntu/Mint)
-`sudo apt-get install g++ cmake git libsdl2 libsdl2-dev`
+`sudo apt-get install g++ cmake make git libsdl2-dev`
 
 
 ## Compile
