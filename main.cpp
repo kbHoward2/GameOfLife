@@ -1,26 +1,20 @@
 /*
 	A simple implementation of Conway's Game of Life; usng SDL2.
-	This program uses a singluar vector as opposed to a multidimensional array to represent 
+	This program uses a singluar vector as opposed to a multidimensional array to represent
 	cells. This allows for greater simplicity for addition of rows and columns in the future.
 	(Hopefully).
 
 	This code is made available under the Creative Commons Zero 1.0 License (https://creativecommons.org/publicdomain/zero/1.0)”
 */
 
+
 #include <iostream>
 #include <random>
 #include <vector>
 #include <chrono>
 
-#ifdef _WIN32
-#include <SDL.h>
-
-#elif __linux__
 #include <SDL2/SDL.h>
 
-#else
-std::cout << "Please make sure SDL2 is installed on this Machine!\n";
-#endif
 /* The Display class and initializes and refreshes the display window. Handling all SDL2 display functions.*/
 
 constexpr float ASPECT_RATIO = 1.777777777777778f;
@@ -137,19 +131,22 @@ public:
 	void Render();
 
 	int GetIndex(int x, int y) { return (y * m_nBoardSizeWidth + x);}
- 
+
 
 private:
 	Display display;
 	std::vector<bool> m_bBoard, m_bNextBoard;
-  bool m_bRunning = true;
+ 	bool m_bRunning = true;
 
-	// 1, 2, 3, 4 - starts to get weird 6, 8 
+	// 1, 2, 3, 4 - starts to get weird 6, 8
 	int m_nCellSize = 5;
 	int m_nBoardSizeWidth;
 	int m_nBoardSizeHeight;
 
 	int m_nTotalElements;
+	bool m_bIsPaused;
+
+	const Uint8* m_uKeyStates;
 };
 
 void Life::Start()
@@ -166,6 +163,9 @@ void Life::Start()
 		m_bNextBoard.reserve(m_nTotalElements);
 		Seed(0.90f);
 		m_bRunning = true;
+		m_bIsPaused = false;
+
+		m_uKeyStates = SDL_GetKeyboardState(NULL);
 	}
 }
 
@@ -174,28 +174,40 @@ void Life::Run()
 
   auto tp0 = std::chrono::high_resolution_clock::now();
 
-  float tick = 8.f;
+  float tick = 20.f;
   float tick_rate = 1000 / tick;
   float lag = 0.0;
-  
+
   while (m_bRunning)
     {
       auto tp1 = std::chrono::high_resolution_clock::now();
       std::chrono::duration<float, std::milli> elapsed = tp1 - tp0;
       float elapsedTime= elapsed.count();
-      
+
       if (!display.PollInput())
 	m_bRunning = false;
 
+/*	if (m_uKeyStates[SDL_SCANCODE_LEFT] && m_uKeyStates[SDL_SCANCOD)
+	{
+		if (tick > 0) tick -= 5.0f;
+		tick_rate = 1000 / tick;
+
+	}
+
+*/
       tp0 = tp1;
       lag += elapsedTime;
 
       while (lag >= tick_rate)
 	{
-	  Update();
+
+	  if (!m_bIsPaused)
+	  	Update();
+
 	  lag -= tick_rate;
 	}
       Render();
+
     }
 }
 
@@ -245,7 +257,7 @@ void Life::Update()
 
 	//m_bNextBoard.clear();
 	m_bNextBoard = m_bBoard;
-	
+
 	for (int y = 0; y < m_nBoardSizeHeight; y++)
 	{
 		for (int x = 0; x < m_nBoardSizeWidth; x++)
@@ -284,7 +296,7 @@ int Life::GetTotalNeighbors(int const x_pos, const int y_pos, const std::vector<
 		{
 			int _x = (m_nBoardSizeWidth + x) % m_nBoardSizeWidth;
 			int _y = (m_nBoardSizeHeight + y) % m_nBoardSizeHeight;
-			
+
 			if (m_bBoard.at(GetIndex(_x, _y)) && GetIndex(_x, _y) != GetIndex(x_pos, y_pos))
 				neighbors++;
 		}
@@ -294,7 +306,7 @@ int Life::GetTotalNeighbors(int const x_pos, const int y_pos, const std::vector<
 
 int main(int argc, char **argv)
 {
-  
+
 	Life life;
 
 	life.Start();
