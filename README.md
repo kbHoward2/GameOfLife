@@ -22,14 +22,10 @@ afterwards run the executable.
 `./GameOfLife`
 
 ## Upcoming & Planned Features.
-- [x] Refactor application loop.
 - [ ] Pause/Unpause & reset board.
 - [x] Accelerate/Decelerate time.
 - [ ] Left/Right click adds/kills cells in a square.
 - [ ] Generation Counter & total living cell counter.
 - [ ] Colors.
-- [ ] Configuration file for colors.
 - [ ] Automatic resolution and fullscreen/window.
-- [ ] Screen Movement
-- [ ] Magnification.
-- [ ] MacOS support.
+- [ ] Windows & MacOS support.
