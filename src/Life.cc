@@ -30,7 +30,6 @@ void Life::Run() {
     Render();
   }
 }
-
 void Life::Render() {
   m_sfWindow.clear(m_sfBackground);
 
@@ -46,8 +45,36 @@ void Life::Render() {
             m_sfWindow.draw(*m_sfRect);
           }
         }
+
     }
+
+  if (m_bGrid)
+    DrawGrid();
+  
   m_sfWindow.display();
+}
+
+void Life::DrawGrid() {
+  sf::Vertex line[2];
+  
+  for (int w = 0; w < m_nBoardSizeWidth; w++)
+    {
+      line[0].position = sf::Vector2f(0,w);
+      line[0].color = sf::Color::Black;
+      line[1].position = sf::Vector2f(m_nBoardSizeWidth, w);
+      line[1].color = sf::Color::Black;
+      m_sfWindow.draw(line, 2, sf::Lines);
+    }
+  
+  for (int h = 0; h < m_nBoardSizeHeight; h++)
+    {
+      line[0].position = sf::Vector2f(h, 0);
+      line[0].color = sf::Color::Black;
+      line[1].position = sf::Vector2f(h, m_nBoardSizeHeight);
+      line[1].color = sf::Color::Black;
+
+      m_sfWindow.draw(line, 2, sf::Lines);
+    }
 }
 
 void Life::PollEvents() {
@@ -156,5 +183,6 @@ void Life::KeyInput(sf::Keyboard::Key key) {
   if (key == sf::Keyboard::Space)
     (m_bPaused) ? m_bPaused = false : m_bPaused = true;
 
-  
+  if (key == sf::Keyboard::G)
+    (m_bGrid) ? m_bGrid = false : m_bGrid = true;
 }

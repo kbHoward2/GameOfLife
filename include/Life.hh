@@ -13,18 +13,17 @@ public:
   Life(float, float s = 0);
   void Run();
 
-  const static int m_nWindowWidth = 800;
-  const static int m_nWindowHeight =  450;
-  const static int m_nBoardSizeWidth = 50;
-  const static int m_nBoardSizeHeight = 50;
+  const static int m_nWindowWidth = 1366;
+  const static int m_nWindowHeight =  768;
+  const static int m_nBoardSizeWidth = 100;
+  const static int m_nBoardSizeHeight = 100;
   
   typedef std::array<bool, m_nBoardSizeWidth * m_nBoardSizeHeight> Board;
   
 private:
 
-  enum BUTTONS {NEW_BOARD, PAUSE, SPEED_UP, SPEED_DOWN};
-  
   void Render();
+  void DrawGrid();
   void PollEvents();
   Board Seed(float);
   void Tick();
@@ -32,9 +31,10 @@ private:
   int GetNeighbors (int, int, Board&);
   inline int GetIndex(const int x, const int y) {return (y * m_nBoardSizeWidth + x);}
   void KeyInput(sf::Keyboard::Key key);
+  bool CheckState();
 
   const std::string m_sTitle = "Conway's Game Of Life";
-  bool m_bRunning, m_bPaused = false;
+  bool m_bRunning, m_bGrid = false, m_bPaused = false;
   float m_fTickRate = 20.f;
   float m_fLimit = 50.f;
   float m_fSeed;
