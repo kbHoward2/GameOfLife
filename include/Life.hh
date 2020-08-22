@@ -14,9 +14,9 @@ public:
   Life(float, float s = 0);
   void Run();
 
-  const static int m_nWindowWidth = 1280;
-  const static int m_nWindowHeight = 720;
-  const static int m_nBoardSizeWidth = 50;
+  const static int m_nWindowWidth = 800;
+  const static int m_nWindowHeight = 600;
+  const static int m_nBoardSizeWidth = 150;
   const static int m_nBoardSizeHeight = m_nBoardSizeWidth;
   
   typedef std::array<bool, m_nBoardSizeWidth * m_nBoardSizeHeight> Board;

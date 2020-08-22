@@ -39,11 +39,17 @@ Additionally, it's also possible to generate the board with a seed, by specifyin
 
 ## Controls
 [Mouse Left] - Add/Delete Cell.
+
 [Up Arrow] - Speed up generation (Tap or Hold).
+
 [Down Arrow] - Slow down generation ( Tap or Hold). 
+
 [Spacebar] - Pause/Unpause.
+
 [N] - New Board & Color Generation.
+
 [G] - Toggle Grid.
+
 [C] - Clear Screen.
 
 ### Planned Features
@@ -53,7 +59,7 @@ Additionally, it's also possible to generate the board with a seed, by specifyin
 - [x] Colors.
 - [x] Left click adds/kills cells.
 - [x] Implement Grid.
-- [x] Implement blank boards for drawing.
+- [x] Implement blank boards for user input.
 - [ ] Generation Counter & total living cell counter.
 - [ ] Configuration file for colors.
 - [ ] Automatic resolution and fullscreen/window.

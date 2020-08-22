@@ -2,12 +2,12 @@
 
 Life::Life(float limit, float seed) : m_sfRect( new sf::RectangleShape(sf::Vector2f(1,1))), m_fLimit(limit), m_fSeed(seed) {
 
-  m_sfWindow.create(sf::VideoMode(m_nWindowWidth, m_nWindowHeight), m_sTitle,sf::Style::Close);
-    m_sfMainView.reset(sf::FloatRect(0,0, m_nBoardSizeWidth,m_nBoardSizeHeight));
-    m_sfWindow.setView(m_sfMainView);
-    m_sfWindow.setVerticalSyncEnabled(1);
+  m_sfWindow.create(sf::VideoMode(m_nWindowWidth, m_nWindowHeight), m_sTitle,sf::Style::Fullscreen);
+  m_sfMainView.reset(sf::FloatRect(0,0, m_nBoardSizeWidth,m_nBoardSizeHeight));
+  m_sfWindow.setView(m_sfMainView);
+  m_sfWindow.setVerticalSyncEnabled(1);
 
-    m_bBoard = Seed(m_fSeed);
+  m_bBoard = Seed(m_fSeed);
 }
 
 void Life::Run() {
@@ -226,4 +226,3 @@ int Life::GetIndex(const int &x, const int &y) {
 
   return index;
 }
-
