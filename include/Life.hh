@@ -3,6 +3,7 @@
 
 #include <random>
 #include <array>
+#include <iostream>
 
 #include <SFML/Graphics.hpp>
 
@@ -13,10 +14,10 @@ public:
   Life(float, float s = 0);
   void Run();
 
-  const static int m_nWindowWidth = 1366;
-  const static int m_nWindowHeight =  768;
-  const static int m_nBoardSizeWidth = 100;
-  const static int m_nBoardSizeHeight = 100;
+  const static int m_nWindowWidth = 1280;
+  const static int m_nWindowHeight = 720;
+  const static int m_nBoardSizeWidth = 50;
+  const static int m_nBoardSizeHeight = m_nBoardSizeWidth;
   
   typedef std::array<bool, m_nBoardSizeWidth * m_nBoardSizeHeight> Board;
   
@@ -29,13 +30,13 @@ private:
   void Tick();
   void AdjustTick(float);
   int GetNeighbors (int, int, Board&);
-  inline int GetIndex(const int x, const int y) {return (y * m_nBoardSizeWidth + x);}
   void KeyInput(sf::Keyboard::Key key);
-  bool CheckState();
-
+  void UpdateCell(const int&, const int&);
+  int GetIndex(const int &x, const int &y);
+ 
   const std::string m_sTitle = "Conway's Game Of Life";
   bool m_bRunning, m_bGrid = false, m_bPaused = false;
-  float m_fTickRate = 20.f;
+  float m_fTickRate = 30.f;
   float m_fLimit = 50.f;
   float m_fSeed;
 
@@ -46,6 +47,7 @@ private:
   sf::RectangleShape *m_sfRect = nullptr;
   sf::Color m_sfBackground;
   sf::Color m_sfForeground;
+  sf::Vector2i m_sfMousePos;
 
   Board m_bBoard;
 };

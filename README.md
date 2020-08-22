@@ -38,21 +38,22 @@ Additionally, it's also possible to generate the board with a seed, by specifyin
 `./GameOfLife 0.40 11127`
 
 ## Controls
+[Mouse Left] - Add/Delete Cell.
 [Up Arrow] - Speed up generation (Tap or Hold).
 [Down Arrow] - Slow down generation ( Tap or Hold). 
 [Spacebar] - Pause/Unpause.
 [N] - New Board & Color Generation.
 [G] - Toggle Grid.
-
+[C] - Clear Screen.
 
 ### Planned Features
 - [x] Refactor application loop.
 - [x] Pause/Unpause & reset board.
 - [x] Accelerate/Decelerate tick rate.
 - [x] Colors.
-- [ ] Left click adds/kills cells.
+- [x] Left click adds/kills cells.
 - [x] Implement Grid.
-- [ ] Implement blank boards for drawing.
+- [x] Implement blank boards for drawing.
 - [ ] Generation Counter & total living cell counter.
 - [ ] Configuration file for colors.
 - [ ] Automatic resolution and fullscreen/window.

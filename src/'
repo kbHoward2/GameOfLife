@@ -2,7 +2,7 @@
 
 Life::Life(float limit, float seed) : m_sfRect( new sf::RectangleShape(sf::Vector2f(1,1))), m_fLimit(limit), m_fSeed(seed) {
 
-  m_sfWindow.create(sf::VideoMode(m_nWindowWidth, m_nWindowHeight), m_sTitle,sf::Style::Close);
+  m_sfWindow.create(sf::VideoMode(m_nWindowWidth, m_nWindowHeight), m_sTitle);
     m_sfMainView.reset(sf::FloatRect(0,0, m_nBoardSizeWidth,m_nBoardSizeHeight));
     m_sfWindow.setView(m_sfMainView);
     m_sfWindow.setVerticalSyncEnabled(1);
@@ -106,7 +106,7 @@ Life::Board Life::Seed(float seed = 0.f) {
 
     if (seed == 0.f)
       srand(time(0));
-
+    
     else
       srand(seed);
     
@@ -190,40 +190,19 @@ void Life::KeyInput(sf::Keyboard::Key key) {
 
   if (key == sf::Keyboard::G)
     (m_bGrid) ? m_bGrid = false : m_bGrid = true;
-
-  if (key == sf::Keyboard::C)
-    m_bBoard.fill(0);
 }
 
 void Life::UpdateCell(const int &x, const int &y) {
-
-  float f_WinWidth = float(m_nWindowWidth);
-  float f_WinHeight= float(m_nWindowHeight);
-  float f_BoardSizeWidth = float(m_nBoardSizeWidth);
-  float f_BoardSizeHeight = float(m_nBoardSizeHeight);
+  float x_ratio = m_nWindowWidth / m_nBoardSizeWidth;
+  float y_ratio = m_nWindowHeight/ m_nBoardSizeHeight;
   
-  float x_ratio = f_WinWidth / f_BoardSizeWidth;
-  float y_ratio = f_WinWidth / f_BoardSizeHeight;
-  float aspect = f_WinWidth / f_WinHeight;
-  
-  float _x = float(x) / x_ratio;
-  float _y = (float(y) / y_ratio) * aspect;
+  int _x = x * x_ratio;
+  int _y = y * y_ratio;
 
   int index = GetIndex(_x,_y);
   
-  (m_bBoard.at(index)) ? m_bBoard.at(index) = false : m_bBoard.at(index) = true;
-}
-
-int Life::GetIndex(const int &x, const int &y) {
-
-  int index = y * m_nBoardSizeWidth + x;
+  std::cout << "x: " << _x << " y: " << _y << " index: " << index << std::endl;
   
-  if (index >= m_nBoardSizeWidth * m_nBoardSizeHeight)
-    index = (m_nBoardSizeWidth  * m_nBoardSizeHeight) - 1;
-
-  else if (index < 0)
-    index = 0;
-
-  return index;
+  (m_bBoard.at(index)) ? m_bBoard.at(index) = false : m_bBoard.at(index) = true;
 }
 
