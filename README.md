@@ -60,8 +60,6 @@ Additionally, it's also possible to generate the board with a seed, by specifyin
 - [x] Left click adds/kills cells.
 - [x] Implement Grid.
 - [x] Implement blank boards for user input.
-- [ ] Generation Counter & total living cell counter.
-- [ ] Configuration file for colors.
-- [ ] Automatic resolution and fullscreen/window.
+- [ ] Loop Mode.
 
 ![Alt text](yellow-green.png?raw=true)

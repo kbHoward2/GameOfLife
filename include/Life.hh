@@ -14,9 +14,9 @@ public:
   Life(float, float s = 0);
   void Run();
 
-  const static int m_nWindowWidth = 800;
-  const static int m_nWindowHeight = 600;
-  const static int m_nBoardSizeWidth = 150;
+  const static int m_nWindowWidth = 1280;
+  const static int m_nWindowHeight = 720;
+  const static int m_nBoardSizeWidth = 100;
   const static int m_nBoardSizeHeight = m_nBoardSizeWidth;
   
   typedef std::array<bool, m_nBoardSizeWidth * m_nBoardSizeHeight> Board;
@@ -33,10 +33,11 @@ private:
   void KeyInput(sf::Keyboard::Key key);
   void UpdateCell(const int&, const int&);
   int GetIndex(const int &x, const int &y);
+  bool CheckStates(Board &b);
  
   const std::string m_sTitle = "Conway's Game Of Life";
   bool m_bRunning, m_bGrid = false, m_bPaused = false;
-  float m_fTickRate = 30.f;
+  float m_fTickRate = 15.f;
   float m_fLimit = 50.f;
   float m_fSeed;
 
@@ -50,6 +51,7 @@ private:
   sf::Vector2i m_sfMousePos;
 
   Board m_bBoard;
+  Board m_bPrevStates[3];
 };
 
 #endif // LIFE_HH

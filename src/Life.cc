@@ -2,7 +2,7 @@
 
 Life::Life(float limit, float seed) : m_sfRect( new sf::RectangleShape(sf::Vector2f(1,1))), m_fLimit(limit), m_fSeed(seed) {
 
-  m_sfWindow.create(sf::VideoMode(m_nWindowWidth, m_nWindowHeight), m_sTitle,sf::Style::Fullscreen);
+  m_sfWindow.create(sf::VideoMode(m_nWindowWidth, m_nWindowHeight), m_sTitle,sf::Style::Close);
   m_sfMainView.reset(sf::FloatRect(0,0, m_nBoardSizeWidth,m_nBoardSizeHeight));
   m_sfWindow.setView(m_sfMainView);
   m_sfWindow.setVerticalSyncEnabled(1);
@@ -32,7 +32,6 @@ void Life::Run() {
 }
 void Life::Render() {
   m_sfWindow.clear(m_sfBackground);
-
   for (int x = 0; x < m_nBoardSizeWidth; x++)
     {
       for (int y = 0; y < m_nBoardSizeHeight; y++)
@@ -49,6 +48,7 @@ void Life::Render() {
 
   if (m_bGrid)
     DrawGrid();
+  
   
   m_sfWindow.display();
 }
@@ -93,7 +93,6 @@ void Life::PollEvents() {
        case sf::Event::MouseButtonPressed:
 	 m_sfMousePos = (sf::Mouse::getPosition(m_sfWindow));
 	 UpdateCell(m_sfMousePos.x, m_sfMousePos.y);
-	 
 	 break;
 
         default:
@@ -125,6 +124,7 @@ Life::Board Life::Seed(float seed = 0.f) {
 }
 
 void Life::Tick() {
+
   Board nextUniv;
   nextUniv = m_bBoard;
 
@@ -145,12 +145,14 @@ void Life::Tick() {
 	    nextUniv.at(GetIndex(x,y)) = 1;
 	}
     }
+
+  
   m_bBoard = nextUniv;
 }
 
 void Life::AdjustTick(float f) {
-  if (m_fTickRate > 100.f)
-    m_fTickRate = 100.f;
+  if (m_fTickRate > 800.f)
+    m_fTickRate = 800.f;
 
   if (m_fTickRate <= 1)
     m_fTickRate = 2;
