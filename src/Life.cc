@@ -1,98 +1,100 @@
 #include "../include/Life.hh"
+#include <iostream>
 
-Life::Life(float limit, float seed) : m_sfRect( new sf::RectangleShape(sf::Vector2f(1,1))), m_fLimit(limit), m_fSeed(seed) {
+Life::Life(float limit, float seed) : sfRect( new sf::RectangleShape(sf::Vector2f(1,1))), fLimit(limit), fSeed(seed) {
 
-  m_sfWindow.create(sf::VideoMode(m_nWindowWidth, m_nWindowHeight), m_sTitle,sf::Style::Close);
-  m_sfMainView.reset(sf::FloatRect(0,0, m_nBoardSizeWidth,m_nBoardSizeHeight));
-  m_sfWindow.setView(m_sfMainView);
-  m_sfWindow.setVerticalSyncEnabled(1);
+  sfWindow.create(sf::VideoMode(winWidth, winHeight), m_sTitle,sf::Style::Close);
+  sfMainView.reset(sf::FloatRect(0,0, boardWidth,boardHeight));
+  sfWindow.setView(sfMainView);
+  sfWindow.setVerticalSyncEnabled(1);
 
-  m_bBoard = Seed(m_fSeed);
+  bBoard = Seed(fSeed);
 }
 
 void Life::Run() {
-  m_bRunning = true;
+  isRunning = true;
   sf::Clock c;
   sf::Time lastUpdate = sf::Time::Zero;
 
-  while (m_bRunning && m_sfWindow.isOpen())
+  while (isRunning && sfWindow.isOpen())
     {
       sf::Time elapsedTime = c.restart();
       lastUpdate += elapsedTime;
 
-      while (lastUpdate > m_sfTicksPerFrame) {
-	lastUpdate -= m_sfTicksPerFrame;
-	PollEvents();
+      while (lastUpdate > sfTicksPerFrame) {
+        lastUpdate -= sfTicksPerFrame;
+        PollEvents();
 
-	if (!m_bPaused)
-	  Tick();
-    }
-    Render();
-  }
+        if (!isPaused)
+          Tick();
+      }
+
+      Render();
+      }
 }
 void Life::Render() {
-  m_sfWindow.clear(m_sfBackground);
-  for (int x = 0; x < m_nBoardSizeWidth; x++)
+  sfWindow.clear(sfBackground);
+  for (int x = 0; x < boardWidth; x++)
     {
-      for (int y = 0; y < m_nBoardSizeHeight; y++)
+      for (int y = 0; y < boardHeight; y++)
         {
-          m_sfRect->setPosition(x,y);
+          sfRect->setPosition(x,y);
 
-          if (m_bBoard.at(GetIndex(x,y)))
+          if (bBoard.at(GetIndex(x,y)))
           {
-	    m_sfRect->setFillColor(m_sfForeground);
-            m_sfWindow.draw(*m_sfRect);
+	    sfRect->setFillColor(sfForeground);
+            sfWindow.draw(*sfRect);
           }
         }
     }
 
-  if (m_bGrid)
+  if (grid)
     DrawGrid();
   
   
-  m_sfWindow.display();
+  sfWindow.display();
 }
 
 void Life::DrawGrid() {
   sf::Vertex line[2];
   
-  for (int w = 0; w < m_nBoardSizeWidth; w++)
+  for (int w = 0; w < boardWidth; w++)
     {
       line[0].position = sf::Vector2f(0,w);
       line[0].color = sf::Color::Black;
-      line[1].position = sf::Vector2f(m_nBoardSizeWidth, w);
+      line[1].position = sf::Vector2f(boardWidth, w);
       line[1].color = sf::Color::Black;
-      m_sfWindow.draw(line, 2, sf::Lines);
+      sfWindow.draw(line, 2, sf::Lines);
     }
   
-  for (int h = 0; h < m_nBoardSizeHeight; h++)
+  for (int h = 0; h < boardHeight; h++)
     {
       line[0].position = sf::Vector2f(h, 0);
       line[0].color = sf::Color::Black;
-      line[1].position = sf::Vector2f(h, m_nBoardSizeHeight);
+      line[1].position = sf::Vector2f(h, boardHeight);
       line[1].color = sf::Color::Black;
 
-      m_sfWindow.draw(line, 2, sf::Lines);
+      sfWindow.draw(line, 2, sf::Lines);
     }
 }
 
 void Life::PollEvents() {
-  while(m_sfWindow.pollEvent(m_sfEvent))
+  while(sfWindow.pollEvent(sfEvent))
     {
-     switch(m_sfEvent.type)
+     switch(sfEvent.type)
        {
        case sf::Event::Closed:
-	 m_sfWindow.close();
-	 m_bRunning = false;
+	 sfWindow.close();
+	 isRunning = false;
 	 break;
 
         case sf::Event::KeyPressed:
-	  KeyInput(m_sfEvent.key.code);
+	  KeyInput(sfEvent.key.code);
 	  break;
 
        case sf::Event::MouseButtonPressed:
-	 m_sfMousePos = (sf::Mouse::getPosition(m_sfWindow));
-	 UpdateCell(m_sfMousePos.x, m_sfMousePos.y);
+	 sfMousePos = (sf::Mouse::getPosition(sfWindow));
+	 UpdateCell(sfMousePos.x, sfMousePos.y);
 	 break;
 
         default:
@@ -101,23 +103,29 @@ void Life::PollEvents() {
     }
 }
 
-Life::Board Life::Seed(float seed = 0.f) {
+Life::Board Life::Seed(float seed = 0) {
 
-    if (seed == 0.f)
+  std::cout << seed << std::endl;
+
+    if (seed == 0)
       srand(time(0));
 
     else
       srand(seed);
+
+      sf::Color board_color = sf::Color(rand() % 100, 
+      rand() % 100,rand() % 100, 255);
     
-    m_sfBackground = sf::Color(rand(), rand(), rand(), 255);
-    m_sfForeground = sf::Color(rand(), rand(), rand(), 255);
+    sfBackground = board_color;
+    sfForeground = sf::Color((board_color.r - 127), 
+    (board_color.g - 127), board_color.b - 127, 255);
 
     Board tmp;
 
-  for (int i = 0; i < m_nBoardSizeWidth * m_nBoardSizeHeight; i++)
+  for (int i = 0; i < boardWidth * boardHeight; i++)
   {
     float r = rand() / (RAND_MAX + 1.);
-    (r > m_fLimit) ? tmp.at(i) = true : tmp.at(i) = false;
+    (r > fLimit) ? tmp.at(i) = true : tmp.at(i) = false;
   }
 
   return tmp;
@@ -126,39 +134,37 @@ Life::Board Life::Seed(float seed = 0.f) {
 void Life::Tick() {
 
   Board nextUniv;
-  nextUniv = m_bBoard;
+  nextUniv = bBoard;
 
-  for (int y = 0; y < m_nBoardSizeHeight; y++)
+  for (int y = 0; y < boardHeight; y++)
     {
-      for (int x = 0; x < m_nBoardSizeWidth; x++)
+      for (int x = 0; x < boardWidth; x++)
 	{
-	  int n = GetNeighbors(x,y,m_bBoard);
+	  int n = GetNeighbors(x,y,bBoard);
 
-	  if (m_bBoard.at(GetIndex(x,y)) == 1)
+	  if (bBoard.at(GetIndex(x,y)) == 1)
 	  {
 	    if (n < 2 || n > 3)
 		nextUniv.at(GetIndex(x,y)) = 0;
 	    else
 		nextUniv.at(GetIndex(x,y)) = 1;
 	  }
-	  else if (!m_bBoard.at(GetIndex(x,y)) && n == 3)
-	    nextUniv.at(GetIndex(x,y)) = 1;
+	  else if (!bBoard.at(GetIndex(x,y)) && n == 3)
+	     nextUniv.at(GetIndex(x,y)) = 1;
 	}
     }
-
-  
-  m_bBoard = nextUniv;
+  bBoard = nextUniv;
 }
 
 void Life::AdjustTick(float f) {
-  if (m_fTickRate > 800.f)
-    m_fTickRate = 800.f;
+  if (fTickRate > 800.f)
+    fTickRate = 800.f;
 
-  if (m_fTickRate <= 1)
-    m_fTickRate = 2;
+  if (fTickRate <= 1)
+    fTickRate = 2;
 
-  m_fTickRate += f;
-  m_sfTicksPerFrame = sf::seconds(1.f/m_fTickRate);
+  fTickRate += f;
+  sfTicksPerFrame = sf::seconds(1.f/fTickRate);
 }
 
 int Life::GetNeighbors(int x, int y, Board &board) {
@@ -168,8 +174,8 @@ int Life::GetNeighbors(int x, int y, Board &board) {
     {
       for (int y_pos = y -1; y_pos <= y+1; y_pos++)
         {
-          int _x = (m_nBoardSizeWidth + x_pos) % m_nBoardSizeWidth;
-          int _y = (m_nBoardSizeHeight + y_pos) % m_nBoardSizeHeight;
+          int _x = (boardWidth + x_pos) % boardWidth;
+          int _y = (boardHeight + y_pos) % boardHeight;
 
           if (board.at(GetIndex(_x,_y)) && GetIndex(_x,_y) != GetIndex(x,y))
             neighbors++;
@@ -179,7 +185,7 @@ int Life::GetNeighbors(int x, int y, Board &board) {
 }
 void Life::KeyInput(sf::Keyboard::Key key) {
   if (key == sf::Keyboard::N)
-    m_bBoard = Seed();
+    bBoard = Seed();
 
   if (key == sf::Keyboard::Up)
     AdjustTick(1.0f);
@@ -188,21 +194,21 @@ void Life::KeyInput(sf::Keyboard::Key key) {
     AdjustTick(-1.0f);
 
   if (key == sf::Keyboard::Space)
-    (m_bPaused) ? m_bPaused = false : m_bPaused = true;
+    (isPaused) ? isPaused = false : isPaused = true;
 
   if (key == sf::Keyboard::G)
-    (m_bGrid) ? m_bGrid = false : m_bGrid = true;
+    (grid) ? grid = false : grid = true;
 
   if (key == sf::Keyboard::C)
-    m_bBoard.fill(0);
+    bBoard.fill(0);
 }
 
 void Life::UpdateCell(const int &x, const int &y) {
 
-  float f_WinWidth = float(m_nWindowWidth);
-  float f_WinHeight= float(m_nWindowHeight);
-  float f_BoardSizeWidth = float(m_nBoardSizeWidth);
-  float f_BoardSizeHeight = float(m_nBoardSizeHeight);
+  float f_WinWidth = float(winWidth);
+  float f_WinHeight= float(winHeight);
+  float f_BoardSizeWidth = float(boardWidth);
+  float f_BoardSizeHeight = float(boardHeight);
   
   float x_ratio = f_WinWidth / f_BoardSizeWidth;
   float y_ratio = f_WinWidth / f_BoardSizeHeight;
@@ -213,15 +219,15 @@ void Life::UpdateCell(const int &x, const int &y) {
 
   int index = GetIndex(_x,_y);
   
-  (m_bBoard.at(index)) ? m_bBoard.at(index) = false : m_bBoard.at(index) = true;
+  (bBoard.at(index)) ? bBoard.at(index) = false : bBoard.at(index) = true;
 }
 
 int Life::GetIndex(const int &x, const int &y) {
 
-  int index = y * m_nBoardSizeWidth + x;
+  int index = y * boardWidth + x;
   
-  if (index >= m_nBoardSizeWidth * m_nBoardSizeHeight)
-    index = (m_nBoardSizeWidth  * m_nBoardSizeHeight) - 1;
+  if (index >= boardWidth * boardHeight)
+    index = (boardWidth  * boardHeight) - 1;
 
   else if (index < 0)
     index = 0;

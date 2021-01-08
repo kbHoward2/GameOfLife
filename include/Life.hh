@@ -14,12 +14,14 @@ public:
   Life(float, float s = 0);
   void Run();
 
-  const static int m_nWindowWidth = 1280;
-  const static int m_nWindowHeight = 720;
-  const static int m_nBoardSizeWidth = 100;
-  const static int m_nBoardSizeHeight = m_nBoardSizeWidth;
+  const static int winWidth = 1920;
+  const static int winHeight = winWidth / 1.77777f;
+
+  // Although not required, the board height and width are set to be equal.
+  const static int boardWidth = 100;
+  const static int boardHeight = boardWidth;
   
-  typedef std::array<bool, m_nBoardSizeWidth * m_nBoardSizeHeight> Board;
+  typedef std::array<bool, boardWidth * boardHeight> Board;
   
 private:
 
@@ -36,22 +38,21 @@ private:
   bool CheckStates(Board &b);
  
   const std::string m_sTitle = "Conway's Game Of Life";
-  bool m_bRunning, m_bGrid = false, m_bPaused = false;
-  float m_fTickRate = 15.f;
-  float m_fLimit = 50.f;
-  float m_fSeed;
+  bool isRunning, grid = false, isPaused = false;
+  float fTickRate = 15.f;
+  float fLimit = 50.f;
+  float fSeed;
 
-  sf::RenderWindow m_sfWindow;
-  sf::View m_sfMainView;
-  sf::Time m_sfTicksPerFrame = sf::seconds(1.f/m_fTickRate);
-  sf::Event m_sfEvent;
-  sf::RectangleShape *m_sfRect = nullptr;
-  sf::Color m_sfBackground;
-  sf::Color m_sfForeground;
-  sf::Vector2i m_sfMousePos;
+  sf::RenderWindow sfWindow;
+  sf::View sfMainView;
+  sf::Time sfTicksPerFrame = sf::seconds(1.f/fTickRate);
+  sf::Event sfEvent;
+  sf::RectangleShape *sfRect = nullptr;
+  sf::Color sfBackground;
+  sf::Color sfForeground;
+  sf::Vector2i sfMousePos;
 
-  Board m_bBoard;
-  Board m_bPrevStates[3];
+  Board bBoard;
 };
 
 #endif // LIFE_HH
