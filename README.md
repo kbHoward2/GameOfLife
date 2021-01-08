@@ -1,7 +1,7 @@
 # Game Of Life 
 A simple recreation of Conway's Game of Life using C++ and SFML.
 
-![Alt text](blue-red.png?raw=true "Randomized colors")
+![Alt text](screenshot.png?raw=true "Randomized colors")
 
 ## Features
 - User input or Pseudorandom board generation, and thresholds.
@@ -62,4 +62,4 @@ Additionally, it's also possible to generate the board with a seed, by specifyin
 - [x] Implement blank boards for user input.
 - [ ] Loop Mode.
 
-![Alt text](yellow-green.png?raw=true)
+![Alt text](screenshot2.png?raw=true)

@@ -3,7 +3,7 @@
 
 Life::Life(float limit, float seed) : sfRect( new sf::RectangleShape(sf::Vector2f(1,1))), fLimit(limit), fSeed(seed) {
 
-  sfWindow.create(sf::VideoMode(winWidth, winHeight), m_sTitle,sf::Style::Close);
+  sfWindow.create(sf::VideoMode(winWidth, winHeight), m_sTitle,sf::Style::Fullscreen);
   sfMainView.reset(sf::FloatRect(0,0, boardWidth,boardHeight));
   sfWindow.setView(sfMainView);
   sfWindow.setVerticalSyncEnabled(1);
