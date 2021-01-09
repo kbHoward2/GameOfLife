@@ -1,0 +1,3 @@
+/home/kannon/Repositories/GameOfLife/build/CMakeFiles/edit_cache.dir
+/home/kannon/Repositories/GameOfLife/build/CMakeFiles/rebuild_cache.dir
+/home/kannon/Repositories/GameOfLife/build/CMakeFiles/GameOfLife.dir

@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kannon/Repositories/GameOfLife/include/Life.hh
+random
+-
+array
+-
+iostream
+-
+SFML/Graphics.hpp
+-
+
+/home/kannon/Repositories/GameOfLife/src/Life.cc
+../include/Life.hh
+/home/kannon/Repositories/GameOfLife/include/Life.hh
+iostream
+-
+
