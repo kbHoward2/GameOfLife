@@ -14,29 +14,28 @@ public:
   Life(float, float s = 0);
   void Run();
 
-   int winWidth = 400;
-   int winHeight = 400;
+  int winWidth = 400;
+  int winHeight = 400;
 
   // Although not required, the board height and width are set to be equal.
-  const static int boardWidth = 500;
+  const static int boardWidth = 300;
   const static int boardHeight = boardWidth;
-  
-  typedef std::array<bool, boardWidth * boardHeight> Board;
-  
-private:
 
+  typedef std::array<bool, boardWidth * boardHeight> Board;
+
+private:
   void Render();
   void DrawGrid();
   void PollEvents();
   Board Seed(float);
   void Tick();
   void AdjustTick(float);
-  int GetNeighbors (int, int, Board&);
+  int GetNeighbors(int, int, Board &);
   void KeyInput(sf::Keyboard::Key key);
-  void UpdateCell(const int&, const int&);
+  void UpdateCell(const int &, const int &);
   int GetIndex(const int &x, const int &y);
   bool CheckStates(Board &b);
- 
+
   const std::string m_sTitle = "Conway's Game Of Life";
   bool isRunning, grid = false, isPaused = false;
   float fTickRate = 15.f;
@@ -45,7 +44,7 @@ private:
 
   sf::RenderWindow sfWindow;
   sf::View sfMainView;
-  sf::Time sfTicksPerFrame = sf::seconds(1.f/fTickRate);
+  sf::Time sfTicksPerFrame = sf::seconds(1.f / fTickRate);
   sf::Event sfEvent;
   sf::RectangleShape *sfRect = nullptr;
   sf::Color sfBackground;
