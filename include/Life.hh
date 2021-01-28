@@ -14,11 +14,11 @@ public:
   Life(float, float s = 0);
   void Run();
 
-  int winWidth = 400;
-  int winHeight = 400;
+  int winWidth = 200;
+  int winHeight = 200;
 
   // Although not required, the board height and width are set to be equal.
-  const static int boardWidth = 300;
+  const static int boardWidth = 100;
   const static int boardHeight = boardWidth;
 
   typedef std::array<bool, boardWidth * boardHeight> Board;
