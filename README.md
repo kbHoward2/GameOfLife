@@ -62,7 +62,7 @@ Run the program once to generate the `config.txt` file. Here you can make change
 - [x] Left click adds/kills cells.
 - [x] Implement Grid.
 - [x] Implement blank boards for user input.
-- [ ] Text Configuration File. 
+- [X] Text Configuration File. 
 - [ ] Windows Build.
 - [ ] Infinte Grid.
 - [ ] Zoom.
