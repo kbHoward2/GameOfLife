@@ -37,7 +37,7 @@ Additionally, it's also possible to generate the board with a seed, by specifyin
 `./GameOfLife 0.40 11127`
 
 ## Settings
-Run the program once to generate the `settings.txt` file. Here you can make changes to the window width, height, seed, and the threshold of cells.
+Run the program once to generate the `config.txt` file. Here you can make changes to the window width, height, seed, and the threshold of cells.
 
 ## Controls
 [Mouse Left] - Add/Delete Cell.
