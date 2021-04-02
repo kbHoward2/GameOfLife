@@ -28,7 +28,6 @@ Enter the following in a commandline:
 
 `make`
 
-
 ## Execution (Linux)
 Type the following into a commandline to execute a pseudorandom board:
 `./GameOfLife`
@@ -36,6 +35,9 @@ Type the following into a commandline to execute a pseudorandom board:
 Additionally, it's also possible to generate the board with a seed, by specifying a __floating point__ threshold value (0.0, 1.0), then a seed __floating point__ value. The command below generates an board with the threshold value of 40%, and a seed of 11127. 
 
 `./GameOfLife 0.40 11127`
+
+## Settings
+Run the program once to generate the `settings.txt` file. Here you can make changes to the window width, height, seed, and the threshold of cells.
 
 ## Controls
 [Mouse Left] - Add/Delete Cell.
@@ -60,6 +62,10 @@ Additionally, it's also possible to generate the board with a seed, by specifyin
 - [x] Left click adds/kills cells.
 - [x] Implement Grid.
 - [x] Implement blank boards for user input.
+- [ ] Text Configuration File. 
+- [ ] Windows Build.
+- [ ] Infinte Grid.
+- [ ] Zoom.
 - [ ] Loop Mode.
 
 ![Alt text](screenshot2.png?raw=true)

@@ -1,25 +1,23 @@
 #ifndef LIFE_HH
 #define LIFE_HH
 
-#include <random>
-#include <array>
-#include <iostream>
-
 #include <SFML/Graphics.hpp>
+
+#include "../include/param.hh"
 
 class Life
 {
 
 public:
-  Life(float, float s = 0);
+  Life(config*);
   void Run();
 
-  int winWidth = 200;
-  int winHeight = 200;
+  int winWidth = 400;
+  int winHeight = 400;
 
   // Although not required, the board height and width are set to be equal.
   const static int boardWidth = 100;
-  const static int boardHeight = boardWidth;
+  const static int boardHeight = 100;
 
   typedef std::array<bool, boardWidth * boardHeight> Board;
 

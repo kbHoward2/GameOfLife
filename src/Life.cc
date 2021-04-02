@@ -1,11 +1,14 @@
+#include <random>
+#include <array>
+
 #include "../include/Life.hh"
 
-Life::Life(float limit, float seed) : sfRect(new sf::RectangleShape(sf::Vector2f(1, 1))), fLimit(limit), fSeed(seed)
+Life::Life(config *conf) : sfRect(new sf::RectangleShape(sf::Vector2f(1, 1))), 
+fLimit(conf->limit), fSeed(conf->seed)
 {
-  sf::VideoMode mode = sf::VideoMode::getDesktopMode();
-  winWidth = mode.width;
-  winHeight = mode.height;
-  sfWindow.create(sf::VideoMode(winWidth, winHeight), m_sTitle, sf::Style::Close);
+  this->winWidth = conf->winWidth;
+  this->winHeight = conf->winHeight;
+  sfWindow.create(sf::VideoMode(winWidth, winHeight), m_sTitle);
   sfMainView.reset(sf::FloatRect(0, 0, boardWidth, boardHeight));
   sfWindow.setView(sfMainView);
   sfWindow.setVerticalSyncEnabled(1);
@@ -111,19 +114,16 @@ void Life::PollEvents()
 
 Life::Board Life::Seed(float seed = 0)
 {
-
   if (seed == 0)
     srand(time(0));
 
   else
     srand(seed);
 
-  sf::Color board_color = sf::Color(rand() % 100,
-                                    rand() % 100, rand() % 100, 255);
+  sf::Color board_color = sf::Color(rand() % 100, rand() % 100, rand() % 100, 255);
 
   sfBackground = board_color;
-  sfForeground = sf::Color((board_color.r - 127),
-                           (board_color.g - 127), board_color.b - 127, 255);
+  sfForeground = sf::Color((board_color.r - 127),(board_color.g - 127), board_color.b - 127, 255);
 
   Board tmp;
 
@@ -234,7 +234,6 @@ void Life::UpdateCell(const int &x, const int &y)
 
 int Life::GetIndex(const int &x, const int &y)
 {
-
   int index = y * boardWidth + x;
 
   if (index >= boardWidth * boardHeight)
